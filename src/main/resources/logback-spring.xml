@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/default.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <springProperty scope = "context" name = "application" source ="spring.application.name" defaultValue="ms-gateway"/>
+    <appender name ="FILE" class ="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--        <file>/D/Semestre 2-2021/Arquitectura del SW/tarea/logs/${application}/${apllication}.log</file>-->
+        <append>true</append>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/Semestre 2-2021/Arquitectura del SW/tarea/logs/${application}/${application}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <!-- Fecha | LogLevel | Hilo | Clase asignada al Logger | Clase desde la cual se hizo Logging | Message -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.$$$ZZ} [%thread] ${LOG_LEVEL_PATTERN:-%5p} ${PID:-} --- [%-40.40logger{39}]: %m%n</pattern>
+            <charset>utf8</charset>
+        </encoder>
+
+
+    </appender>
+
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Fecha | LogLevel | Hilo | Clase asignada al Logger | Clase desde la cual se hizo Logging | Message -->
+            <!--            <pattern>%d{ISO8601} %highlight(%-5level) [%thread] %logger{100} %yellow(%C{1.}) : %msg%n%throwable</pattern>-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:-} --- [%t] %-40.40logger{39} : %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="FILE" />
+        <appender-ref ref = "Console"/>
+    </root>
+    <logger name="com.arquitecturasoftware.msgateway" level="INFO"/>
+</configuration>

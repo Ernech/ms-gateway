@@ -13,18 +13,37 @@ spring:
             allowedOrigins: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+      routes:
+        - id: service_student
+          uri: lb://MS-STUDENT
+          predicates:
+            - Path=/ms-student/**
+          filters:
+            - RewritePath=/ms-student/(?<remaining>.*), /$\{remaining}
+        - id: service_teacher
+          uri: lb://MS-TEACHER
+          predicates:
+            - Path=/ms-teacher/**
+          filters:
+            - RewritePath=/ms-teacher/(?<remaining>.*), /$\{remaining}
+  #      discovery:
+#        locator:
+#          enabled: true
+#          lower-case-service-id: true
 
   main:
     web-application-type: reactive
   zipkin:
     base-url: ${ZIPKIN_URI:http://localhost:9411}
+    enabled: false
 eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8763/eureka}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
