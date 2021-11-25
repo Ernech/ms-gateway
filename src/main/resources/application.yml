@@ -35,7 +35,7 @@ spring:
     web-application-type: reactive
   zipkin:
     base-url: ${ZIPKIN_URI:http://localhost:9411}
-    enabled: false
+    enabled: true
 eureka:
   client:
     fetch-registry: true
